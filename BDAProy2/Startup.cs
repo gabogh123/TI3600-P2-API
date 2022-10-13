@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Neo4jClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,12 @@ namespace BDAProy2
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BDAProy2", Version = "v1" });
             });
+
+            var client = new BoltGraphClient(new Uri("bolt://localhost:7687"), "neo4j", "1234");
+            client.ConnectAsync();
+            services.AddSingleton<IGraphClient>(client);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
